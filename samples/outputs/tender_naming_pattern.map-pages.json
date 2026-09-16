@@ -1,0 +1,17 @@
+{
+ "input": "samples/tender_naming_pattern.pdf",
+ "map_pages": [
+  {
+   "page": 1,
+   "score": 0.79,
+   "reasons": [
+    "strongly polychrome page (chroma 0.51, 75 colours)",
+    "landscape orientation",
+    "little or no body text",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  }
+ ]
+}

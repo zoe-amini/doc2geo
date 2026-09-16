@@ -1,0 +1,253 @@
+{
+ "input": "samples/usgs_cp46.pdf",
+ "map_pages": [
+  {
+   "page": 12,
+   "score": 1.0,
+   "reasons": [
+    "9 graticule tick labels",
+    "1 cartographic term(s)",
+    "dense monochrome graphics with little text (ink 0.20)",
+    "landscape orientation",
+    "little or no body text",
+    "caption reads as a map: 'Figure 1.\u2014Index map showing principal morphostructural featu'"
+   ],
+   "caption": "Figure 1.\u2014Index map showing principal morphostructural features of the Northwest Quadrant",
+   "image": null,
+   "georeference": {
+    "fitted": false,
+    "residual_deg": null,
+    "note": "need at least two ticks on each axis; found 1 longitude and 3 latitude",
+    "control_points": [
+     {
+      "page_x": 346.68,
+      "page_y": 527.94,
+      "axis": "lon",
+      "value": 100.0,
+      "label": "100\u00b0E"
+     },
+     {
+      "page_x": 142.74,
+      "page_y": 326.34,
+      "axis": "lat",
+      "value": 20.0,
+      "label": "20\u00b0N,"
+     },
+     {
+      "page_x": 101.16,
+      "page_y": 180.0,
+      "axis": "lat",
+      "value": -10.0,
+      "label": "10\u00b0S"
+     },
+     {
+      "page_x": 123.66,
+      "page_y": 283.5,
+      "axis": "lat",
+      "value": 10.0,
+      "label": "10\u00b0N"
+     }
+    ]
+   }
+  },
+  {
+   "page": 35,
+   "score": 0.57,
+   "reasons": [
+    "26 graticule tick labels",
+    "little or no body text"
+   ],
+   "caption": "",
+   "image": null,
+   "georeference": {
+    "fitted": false,
+    "residual_deg": 10.267296,
+    "note": "affine fit is off by up to 10.267\u00b0 at the control points: the sheet is probably projected, not plate carr\u00e9e. Control points are provided; georeference it in QGIS.",
+    "control_points": [
+     {
+      "page_x": 188.28,
+      "page_y": 645.3,
+      "axis": "lat",
+      "value": -4.5833333,
+      "label": "4\u00b035'S"
+     },
+     {
+      "page_x": 188.64,
+      "page_y": 634.32,
+      "axis": "lat",
+      "value": -7.8333333,
+      "label": "7\u00b050'S"
+     },
+     {
+      "page_x": 188.64,
+      "page_y": 623.34,
+      "axis": "lat",
+      "value": -3.1666667,
+      "label": "3\u00b010'S"
+     },
+     {
+      "page_x": 188.64,
+      "page_y": 612.18,
+      "axis": "lat",
+      "value": -5.25,
+      "label": "5\u00b015'S"
+     },
+     {
+      "page_x": 188.64,
+      "page_y": 601.2,
+      "axis": "lat",
+      "value": -6.5,
+      "label": "6\u00b030'S"
+     },
+     {
+      "page_x": 188.82,
+      "page_y": 590.22,
+      "axis": "lat",
+      "value": -2.5,
+      "label": "2\u00b030'S"
+     },
+     {
+      "page_x": 188.82,
+      "page_y": 578.88,
+      "axis": "lat",
+      "value": -5.6666667,
+      "label": "5\u00b040'S"
+     },
+     {
+      "page_x": 188.82,
+      "page_y": 567.9,
+      "axis": "lat",
+      "value": -5.4166667,
+      "label": "5\u00b025'S"
+     },
+     {
+      "page_x": 188.82,
+      "page_y": 556.92,
+      "axis": "lat",
+      "value": -7.25,
+      "label": "7\u00b015'S"
+     },
+     {
+      "page_x": 188.82,
+      "page_y": 545.76,
+      "axis": "lat",
+      "value": -5.75,
+      "label": "5\u00b045'S"
+     },
+     {
+      "page_x": 244.08,
+      "page_y": 645.12,
+      "axis": "lon",
+      "value": 141.8333333,
+      "label": "141\u00b050'E"
+     },
+     {
+      "page_x": 244.08,
+      "page_y": 633.96,
+      "axis": "lon",
+      "value": 147.75,
+      "label": "147\u00b045'E"
+     },
+     {
+      "page_x": 244.08,
+      "page_y": 623.16,
+      "axis": "lon",
+      "value": 152.75,
+      "label": "152\u00b045'E"
+     },
+     {
+      "page_x": 244.44,
+      "page_y": 612.18,
+      "axis": "lon",
+      "value": 141.1666667,
+      "label": "141\u00b010'E"
+     },
+     {
+      "page_x": 244.44,
+      "page_y": 601.2,
+      "axis": "lon",
+      "value": 155.6666667,
+      "label": "155\u00b040'E"
+     },
+     {
+      "page_x": 244.44,
+      "page_y": 590.04,
+      "axis": "lon",
+      "value": 152.0833333,
+      "label": "152\u00b005'E"
+     },
+     {
+      "page_x": 244.62,
+      "page_y": 578.88,
+      "axis": "lon",
+      "value": 142.8333333,
+      "label": "142\u00b050'E"
+     },
+     {
+      "page_x": 244.44,
+      "page_y": 567.9,
+      "axis": "lon",
+      "value": 145.4166667,
+      "label": "145\u00b025'E"
+     },
+     {
+      "page_x": 244.44,
+      "page_y": 556.92,
+      "axis": "lon",
+      "value": 146.3333333,
+      "label": "146\u00b020'E"
+     },
+     {
+      "page_x": 244.26,
+      "page_y": 545.76,
+      "axis": "lon",
+      "value": 145.25,
+      "label": "145\u00b015'E"
+     },
+     {
+      "page_x": 189.0,
+      "page_y": 500.58,
+      "axis": "lat",
+      "value": -8.0833333,
+      "label": "8\u00b005'S"
+     },
+     {
+      "page_x": 189.0,
+      "page_y": 489.6,
+      "axis": "lat",
+      "value": -8.5833333,
+      "label": "8\u00b035'S"
+     },
+     {
+      "page_x": 189.0,
+      "page_y": 478.62,
+      "axis": "lat",
+      "value": -8.5,
+      "label": "8\u00b030'S"
+     },
+     {
+      "page_x": 244.62,
+      "page_y": 496.8,
+      "axis": "lon",
+      "value": 159.1666667,
+      "label": "159\u00b010'E"
+     },
+     {
+      "page_x": 244.62,
+      "page_y": 486.0,
+      "axis": "lon",
+      "value": 159.6666667,
+      "label": "159\u00b040'E"
+     },
+     {
+      "page_x": 244.62,
+      "page_y": 478.62,
+      "axis": "lon",
+      "value": 159.75,
+      "label": "159\u00b045'E"
+     }
+    ]
+   }
+  }
+ ]
+}

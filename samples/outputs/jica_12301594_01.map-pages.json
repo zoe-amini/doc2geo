@@ -1,0 +1,478 @@
+{
+ "input": "samples/jica_12301594_01.pdf",
+ "map_pages": [
+  {
+   "page": 3,
+   "score": 1.0,
+   "reasons": [
+    "3 cartographic term(s)",
+    "strongly polychrome page (chroma 0.32, 117 colours)",
+    "page much larger than the document's usual size",
+    "175 embedded images (composite artwork)"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 23,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.14, 94 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 1-1 BFDM2015 distribution by land-cover types",
+   "image": null
+  },
+  {
+   "page": 31,
+   "score": 0.57,
+   "reasons": [
+    "strongly polychrome page (chroma 0.07, 93 colours)",
+    "22 embedded images (composite artwork)"
+   ],
+   "caption": "Figure 2-1 Methodology for the emission estimate",
+   "image": null
+  },
+  {
+   "page": 43,
+   "score": 0.59,
+   "reasons": [
+    "2 cartographic term(s)",
+    "polychrome page (chroma 0.01, 37 colours)"
+   ],
+   "caption": "Figure 3-6).",
+   "image": null
+  },
+  {
+   "page": 44,
+   "score": 0.67,
+   "reasons": [
+    "1 cartographic term(s)",
+    "strongly polychrome page (chroma 0.03, 110 colours)",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 50,
+   "score": 0.75,
+   "reasons": [
+    "strongly polychrome page (chroma 0.15, 93 colours)",
+    "one large embedded image",
+    "caption reads as a map: 'Figure 3-7 Location map of trail camera and the census line'"
+   ],
+   "caption": "Figure 3-7 Location map of trail camera and the census line",
+   "image": null
+  },
+  {
+   "page": 51,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.06, 122 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 3-9 Line census survey",
+   "image": null
+  },
+  {
+   "page": 54,
+   "score": 0.67,
+   "reasons": [
+    "strongly polychrome page (chroma 0.11, 100 colours)",
+    "landscape orientation",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 55,
+   "score": 0.79,
+   "reasons": [
+    "strongly polychrome page (chroma 0.09, 83 colours)",
+    "landscape orientation",
+    "little or no body text",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 56,
+   "score": 0.57,
+   "reasons": [
+    "polychrome page (chroma 0.10, 77 colours)",
+    "landscape orientation",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 58,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.03, 86 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 3-12 Steps to decide the method",
+   "image": null
+  },
+  {
+   "page": 59,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.07, 148 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 3-13). 10 to 15 days",
+   "image": null
+  },
+  {
+   "page": 63,
+   "score": 0.87,
+   "reasons": [
+    "strongly polychrome page (chroma 0.11, 159 colours)",
+    "little or no body text",
+    "one large embedded image",
+    "caption reads as a map: 'Figure 3-17 Detailed forest distribution map of Gaborone pil'"
+   ],
+   "caption": "Figure 3-17 Detailed forest distribution map of Gaborone pilot area",
+   "image": null
+  },
+  {
+   "page": 64,
+   "score": 0.87,
+   "reasons": [
+    "strongly polychrome page (chroma 0.11, 124 colours)",
+    "little or no body text",
+    "one large embedded image",
+    "caption reads as a map: 'Figure 3-18 Forest stands distribution map of Gaborone pilot'"
+   ],
+   "caption": "Figure 3-18 Forest stands distribution map of Gaborone pilot area",
+   "image": null
+  },
+  {
+   "page": 66,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.07, 116 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 3-21 Version transition of the Prototype forest GIS database",
+   "image": null
+  },
+  {
+   "page": 67,
+   "score": 0.67,
+   "reasons": [
+    "1 cartographic term(s)",
+    "strongly polychrome page (chroma 0.12, 132 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 3-23 Prototype F-GIS-DB interface of the Ver.2",
+   "image": null
+  },
+  {
+   "page": 68,
+   "score": 0.87,
+   "reasons": [
+    "strongly polychrome page (chroma 0.29, 232 colours)",
+    "little or no body text",
+    "one large embedded image",
+    "caption reads as a map: 'Figure 3-25 Prototype F-GIS-DB Interface of Ver.3 (Biomass c'"
+   ],
+   "caption": "Figure 3-25 Prototype F-GIS-DB Interface of Ver.3 (Biomass change theme map)",
+   "image": null
+  },
+  {
+   "page": 71,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.06, 136 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 3-29 Concept for Updating DB Contents by PDCA Cycle",
+   "image": null
+  },
+  {
+   "page": 74,
+   "score": 0.57,
+   "reasons": [
+    "1 cartographic term(s)",
+    "strongly polychrome page (chroma 0.04, 125 colours)"
+   ],
+   "caption": "Figure 3-34 Practice manual and self \u2013 practice using the manual",
+   "image": null
+  },
+  {
+   "page": 75,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.08, 129 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 3-35 Tentative structure of the National Forest Monitoring Plan management unit un",
+   "image": null
+  },
+  {
+   "page": 80,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.07, 101 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 3-36 Risks surrounding the surveyors",
+   "image": null
+  },
+  {
+   "page": 82,
+   "score": 0.65,
+   "reasons": [
+    "polychrome page (chroma 0.01, 25 colours)",
+    "one large embedded image",
+    "caption reads as a map: 'Figure 4-1 Internet Map Server Configuration for Sharing Map'"
+   ],
+   "caption": "Figure 4-1 Internet Map Server Configuration for Sharing Maps",
+   "image": null
+  },
+  {
+   "page": 83,
+   "score": 0.65,
+   "reasons": [
+    "polychrome page (chroma 0.05, 46 colours)",
+    "one large embedded image",
+    "caption reads as a map: 'Figure 4-2 Theme map image (Fire break line data) on the mob'"
+   ],
+   "caption": "Figure 4-2 Theme map image (Fire break line data) on the mobile device",
+   "image": null
+  },
+  {
+   "page": 84,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.07, 132 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 4-3 Field survey to verify the effectiveness of the pilot system",
+   "image": null
+  },
+  {
+   "page": 94,
+   "score": 0.55,
+   "reasons": [
+    "polychrome page (chroma 0.02, 38 colours)",
+    "caption reads as a map: 'Figure\\xa04\u201014\\xa0 Fire\\xa0Weather\\xa0Index\\xa0Map\\xa0Sample\\xa0on\\xa0June\\xa01st,\\xa02014'"
+   ],
+   "caption": "Figure\u00a04\u201014\u00a0 Fire\u00a0Weather\u00a0Index\u00a0Map\u00a0Sample\u00a0on\u00a0June\u00a01st,\u00a02014",
+   "image": null
+  },
+  {
+   "page": 95,
+   "score": 0.77,
+   "reasons": [
+    "strongly polychrome page (chroma 0.20, 159 colours)",
+    "little or no body text",
+    "caption reads as a map: 'Figure 4-16 Fire Zoning Map Sample'"
+   ],
+   "caption": "Figure 4-16 Fire Zoning Map Sample",
+   "image": null
+  },
+  {
+   "page": 97,
+   "score": 0.75,
+   "reasons": [
+    "strongly polychrome page (chroma 0.06, 123 colours)",
+    "one large embedded image",
+    "caption reads as a map: 'Figure 4-18 Asset Map Sample for Kweneng District'"
+   ],
+   "caption": "Figure 4-18 Asset Map Sample for Kweneng District",
+   "image": null
+  },
+  {
+   "page": 99,
+   "score": 0.67,
+   "reasons": [
+    "strongly polychrome page (chroma 0.27, 189 colours)",
+    "little or no body text",
+    "one large embedded image"
+   ],
+   "caption": "Figure 4-21 Comparison of the original satellite imagery (image1)",
+   "image": null
+  },
+  {
+   "page": 100,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.16, 124 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 4-22 Vectorization of Burnt Area Product",
+   "image": null
+  },
+  {
+   "page": 106,
+   "score": 0.57,
+   "reasons": [
+    "polychrome page (chroma 0.02, 28 colours)",
+    "little or no body text",
+    "one large embedded image"
+   ],
+   "caption": "Figure 4-26 The area of the acquired images",
+   "image": null
+  },
+  {
+   "page": 107,
+   "score": 0.67,
+   "reasons": [
+    "strongly polychrome page (chroma 0.09, 183 colours)",
+    "little or no body text",
+    "one large embedded image"
+   ],
+   "caption": "Figure 4-27 The Areas of the SPOT imageries used for the CBNRM",
+   "image": null
+  },
+  {
+   "page": 108,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.11, 111 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 4-28 and",
+   "image": null
+  },
+  {
+   "page": 109,
+   "score": 0.75,
+   "reasons": [
+    "strongly polychrome page (chroma 0.18, 126 colours)",
+    "one large embedded image",
+    "caption reads as a map: 'Figure 4-29 A sample image of the tree crown map'"
+   ],
+   "caption": "Figure 4-29 A sample image of the tree crown map",
+   "image": null
+  },
+  {
+   "page": 110,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.07, 111 colours)",
+    "one large embedded image"
+   ],
+   "caption": "Figure 4-30 KyT members are discussing in the Workshop",
+   "image": null
+  },
+  {
+   "page": 123,
+   "score": 0.57,
+   "reasons": [
+    "polychrome page (chroma 0.08, 76 colours)",
+    "little or no body text",
+    "one large embedded image"
+   ],
+   "caption": "Figure 5-2 Nation",
+   "image": null
+  },
+  {
+   "page": 126,
+   "score": 0.55,
+   "reasons": [
+    "polychrome page (chroma 0.06, 60 colours)",
+    "page much larger than the document's usual size"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 130,
+   "score": 0.54,
+   "reasons": [
+    "dense monochrome graphics with little text (ink 0.11)",
+    "landscape orientation",
+    "little or no body text",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 131,
+   "score": 0.54,
+   "reasons": [
+    "dense monochrome graphics with little text (ink 0.34)",
+    "landscape orientation",
+    "little or no body text",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 132,
+   "score": 0.54,
+   "reasons": [
+    "dense monochrome graphics with little text (ink 0.22)",
+    "landscape orientation",
+    "little or no body text",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 143,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.17, 100 colours)",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 144,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.16, 116 colours)",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 150,
+   "score": 0.87,
+   "reasons": [
+    "strongly polychrome page (chroma 0.35, 157 colours)",
+    "little or no body text",
+    "one large embedded image",
+    "caption reads as a map: 'Figure 4 The map of selected area'"
+   ],
+   "caption": "Figure 4 The map of selected area",
+   "image": null
+  },
+  {
+   "page": 151,
+   "score": 0.55,
+   "reasons": [
+    "strongly polychrome page (chroma 0.04, 109 colours)",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  },
+  {
+   "page": 153,
+   "score": 0.67,
+   "reasons": [
+    "strongly polychrome page (chroma 0.22, 132 colours)",
+    "little or no body text",
+    "one large embedded image"
+   ],
+   "caption": "",
+   "image": null
+  }
+ ]
+}

@@ -1,0 +1,89 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       25.1,
+       -21.05
+      ],
+      [
+       25.6,
+       -21.05
+      ],
+      [
+       25.6,
+       -21.45
+      ],
+      [
+       25.1,
+       -21.45
+      ],
+      [
+       25.1,
+       -21.05
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "licence": "PL-142",
+    "group": "PL-142",
+    "_doc2geo": {
+     "source_crs": "WGS 84",
+     "transform": "none",
+     "accuracy_m": null,
+     "confidence": 0.9,
+     "page": 1,
+     "origin": "group:licence_corners/PL-142"
+    }
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       25.7,
+       -21.1
+      ],
+      [
+       26.15,
+       -21.1
+      ],
+      [
+       26.15,
+       -21.55
+      ],
+      [
+       25.7,
+       -21.55
+      ],
+      [
+       25.7,
+       -21.1
+      ]
+     ]
+    ]
+   },
+   "properties": {
+    "licence": "PL-143",
+    "group": "PL-143",
+    "_doc2geo": {
+     "source_crs": "WGS 84",
+     "transform": "none",
+     "accuracy_m": null,
+     "confidence": 0.9,
+     "page": 1,
+     "origin": "group:licence_corners/PL-143"
+    }
+   }
+  }
+ ]
+}

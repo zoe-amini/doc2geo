@@ -18,4 +18,7 @@ out/
 *.prj
 *.cpg
 
+# ...except the committed example outputs, which are the point of samples/outputs.
+!samples/outputs/**
+
 dist/

@@ -19,7 +19,7 @@ jobs:
       - name: Install poppler and tesseract
         run: sudo apt-get update && sudo apt-get install -y poppler-utils tesseract-ocr
       - name: Sync
-        run: uv sync --extra ocr --python ${{ matrix.python }}
+        run: uv sync --extra ocr --extra gdal --python ${{ matrix.python }}
       - name: Lint
         run: |
           uv run ruff check src tests

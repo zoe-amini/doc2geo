@@ -37,7 +37,8 @@ dependencies = [
 # Scanned pages. Tesseract itself is a system binary; see the README.
 ocr = ["pytesseract>=0.3", "pillow>=10"]
 # Shapefile, GeoPackage, FlatGeobuf and friends. GeoJSON and CSV need none of this.
-gdal = ["pyogrio>=0.8"]
+# Geometry is encoded to WKB in-package, so this is pyogrio and numpy — no geopandas, no shapely.
+gdal = ["pyogrio>=0.8", "numpy>=1.24"]
 all = ["doc2geo[ocr,gdal]"]
 
 [project.urls]

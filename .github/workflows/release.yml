@@ -45,7 +45,7 @@ jobs:
 
       - name: Test before publishing
         run: |
-          uv sync --extra ocr
+          uv sync --extra ocr --extra gdal
           uv run ruff check src tests docs
           uv run ruff format --check src tests docs
           uv run pytest -q

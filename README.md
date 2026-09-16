@@ -12,6 +12,7 @@
 [Examples](#what-it-looks-like) •
 [Map pages](#pulling-the-maps-out-of-a-report) •
 [Geometry](#points-lines-and-polygons) •
+[Sample outputs](#the-samples-and-the-files-they-produce) •
 [Library](#as-a-library) •
 [Releasing](#releasing)
 
@@ -95,6 +96,52 @@ Walking the first ten pages of the same report, with the verdict on each:
 Eight rows, two licences, grouped by the `licence` column and ordered by `corner`:
 
 ![A table of corner coordinates beside the two polygons it becomes](https://raw.githubusercontent.com/zoe-amini/doc2geo/main/docs/examples/licence-corners.png)
+
+
+## The samples, and the files they produce
+
+Every document in [`samples/`](https://github.com/zoe-amini/doc2geo/blob/main/samples/README.md) has been run through the tool and
+its output committed to [`samples/outputs/`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs). Those files are
+produced by [`samples/make_outputs.sh`](https://github.com/zoe-amini/doc2geo/blob/main/samples/make_outputs.sh) and nothing else,
+so what is in the repository is exactly what the current code writes. Open them in QGIS.
+
+| Input | Command | Output |
+| --- | --- | --- |
+| **[jica_10891885_04.pdf](https://github.com/zoe-amini/doc2geo/blob/main/samples/jica_10891885_04.pdf)**<br>88 scanned pages, no text layer | `convert --ocr-repair --max-pages 40` | **15 polygons** — one extent per catalogue record<br>[`.geojson`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs/jica_10891885_04.extents.geojson) · [`.gpkg`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs/jica_10891885_04.extents.gpkg) · [`.shp`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs/jica_10891885_04.extents.shp) · [`.csv`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs/jica_10891885_04.extents.csv) |
+| **[usgs_cp46.pdf](https://github.com/zoe-amini/doc2geo/blob/main/samples/usgs_cp46.pdf)**<br>36 pages, born-digital | `maps --georeference --json` | **2 map pages** (12, 35) with graticule control points and a refused fit<br>[`.map-pages.json`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs/usgs_cp46.map-pages.json) |
+| **[jica_12301594_01.pdf](https://github.com/zoe-amini/doc2geo/blob/main/samples/jica_12301594_01.pdf)**<br>161 pages, born-digital | `maps --json` | **44 map pages**, led by the A3 colour map on page 3<br>[`.map-pages.json`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs/jica_12301594_01.map-pages.json) |
+| **[tender_naming_pattern.pdf](https://github.com/zoe-amini/doc2geo/blob/main/samples/tender_naming_pattern.pdf)**<br>one very large sheet | `maps --json` | **1 map page**, the whole sheet<br>[`.map-pages.json`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs/tender_naming_pattern.map-pages.json) |
+| **[fao_BWA_4.pdf](https://github.com/zoe-amini/doc2geo/blob/main/samples/fao_BWA_4.pdf)**<br>55 scanned pages of prose and forms | `convert --bbox 19.9,-26.95,29.4,-17.75` | **0 records**, and an empty FeatureCollection saying so<br>[`.geojson`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs/fao_BWA_4.points.geojson) |
+| **[licence_corners.csv](https://github.com/zoe-amini/doc2geo/blob/main/samples/licence_corners.csv)**<br>8 rows, 2 licences | `convert` | **2 polygons**, rings closed from the corner order<br>[`.geojson`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs/licence_corners.blocks.geojson) · [`.shp`](https://github.com/zoe-amini/doc2geo/blob/main/samples/outputs/licence_corners.blocks.shp) |
+
+The empty result for the FAO volume is not a failure to report. It is 55 scanned pages of prose
+and soil profile forms with no coordinate pairs a machine can stand behind, and the file says so
+rather than inventing something.
+
+A feature out of the scanned bibliography, in full — the provenance is the point:
+
+```json
+{
+  "type": "Feature",
+  "geometry": { "type": "Polygon", "coordinates": [[[39.0, -4.667], [39.833, -4.667],
+                                                    [39.833, -3.75], [39.0, -3.75], [39.0, -4.667]]] },
+  "properties": {
+    "extent": "-4.6666667/-3.75 39.0/39.8333333",
+    "ocr_repair_enabled": true,
+    "_doc2geo": {
+      "source_crs": "WGS 84",
+      "transform": "none",
+      "accuracy_m": null,
+      "confidence": 0.393,
+      "page": 21,
+      "origin": "bbox:page 21"
+    }
+  }
+}
+```
+
+`confidence` 0.393 is the honest number for a value read by OCR off a poor scan with a repaired
+hemisphere letter. Filter on it with `--min-confidence`.
 
 ## Extracting coordinates
 
