@@ -1,0 +1,54 @@
+[build-system]
+requires = ["uv_build>=0.11.32,<0.13"]
+build-backend = "uv_build"
+
+[project]
+name = "doc2geo"
+version = "0.1.0"
+description = "Turn PDFs, scans, Word documents and spreadsheets into GeoJSON, Shapefiles and GeoPackages."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+authors = [{ name = "Zoe Cayetano" }]
+keywords = ["geospatial", "geojson", "shapefile", "ocr", "pdf", "gis", "etl"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+dependencies = [
+    "pyproj>=3.6",
+    "pypdf>=5.0",
+    "openpyxl>=3.1",
+    "python-docx>=1.1",
+]
+
+[project.optional-dependencies]
+# Scanned pages. Tesseract itself is a system binary; see the README.
+ocr = ["pytesseract>=0.3", "pillow>=10"]
+# Shapefile, GeoPackage, FlatGeobuf and friends. GeoJSON and CSV need none of this.
+gdal = ["pyogrio>=0.8"]
+all = ["doc2geo[ocr,gdal]"]
+
+[project.urls]
+Homepage = "https://github.com/zoe-amini/doc2geo"
+Issues = "https://github.com/zoe-amini/doc2geo/issues"
+
+[project.scripts]
+doc2geo = "doc2geo.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8.2", "ruff>=0.5"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
