@@ -1,4 +1,30 @@
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/zoe-amini/doc2geo/main/docs/logo.png" alt="doc2geo" width="150">
+
 # doc2geo
+
+**Documents in. Maps out.**
+
+`PDF` · `SCAN` · `DOCX` · `XLSX` &nbsp;&nbsp;➜&nbsp;&nbsp; `GEOJSON` · `SHAPEFILE` · `GEOPACKAGE`
+
+[Quickstart](#extracting-coordinates) •
+[Examples](#what-it-looks-like) •
+[Map pages](#pulling-the-maps-out-of-a-report) •
+[Geometry](#points-lines-and-polygons) •
+[Library](#as-a-library) •
+[Releasing](#releasing)
+
+[![ci](https://github.com/zoe-amini/doc2geo/actions/workflows/ci.yml/badge.svg)](https://github.com/zoe-amini/doc2geo/actions/workflows/ci.yml)
+[![pypi](https://img.shields.io/pypi/v/doc2geo?color=C64A30&label=pypi)](https://pypi.org/project/doc2geo/)
+[![python](https://img.shields.io/badge/python-3.11%20|%203.12%20|%203.13-2B3440)](https://pypi.org/project/doc2geo/)
+[![licence](https://img.shields.io/badge/licence-MIT-2B3440)](https://github.com/zoe-amini/doc2geo/blob/main/LICENSE)
+
+[![geometry](https://img.shields.io/badge/geometry-points%20·%20lines%20·%20polygons-C64A30)](#points-lines-and-polygons)
+[![ocr](https://img.shields.io/badge/ocr-tesseract%20or%20hosted-8C8577)](#hosted-ocr)
+[![deps](https://img.shields.io/badge/core%20deps-no%20GDAL%20required-3E7A5E)](#what-it-can-and-cannot-read)
+
+</div>
 
 Turn PDFs, scans, Word documents and spreadsheets into GeoJSON, Shapefiles and GeoPackages.
 
