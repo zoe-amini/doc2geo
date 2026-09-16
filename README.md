@@ -17,6 +17,41 @@ pip install 'doc2geo[gdal]'    # adds Shapefile, GeoPackage, FlatGeobuf
 pip install 'doc2geo[ocr]'     # adds OCR for scanned pages (needs the Tesseract binary)
 ```
 
+## What it looks like
+
+Every figure below is generated from the documents in [`samples/`](samples/README.md) by
+[`docs/make_examples.py`](docs/make_examples.py), so they show what the library currently does
+rather than what it did when someone last drew a diagram.
+
+### A scanned page becomes polygons
+
+A page of a JICA bibliography with no text layer at all. OCR reads it at 0.75 confidence, the
+packed DMS coordinates are parsed per record, and each record's two latitudes and two longitudes
+become an extent.
+
+![A scanned catalogue page beside the two extents extracted from it](docs/examples/scan-to-polygons.png)
+
+The four states of that page, one after another:
+
+![Scan, OCR, parse, polygon](docs/examples/scan-pipeline.gif)
+
+### Finding the map in a report
+
+Page 3 of a 161-page forestry report is a Botswana forest distribution map. Page 4 is prose.
+The detector scores the first 1.00 and the second 0.00, and prints why.
+
+![A rejected page of body text beside the detected map page](docs/examples/map-page-detection.png)
+
+Walking the first ten pages of the same report, with the verdict on each:
+
+![The detector's verdict on each page of a report](docs/examples/map-detection.gif)
+
+### Corner coordinates become licence blocks
+
+Eight rows, two licences, grouped by the `licence` column and ordered by `corner`:
+
+![A table of corner coordinates beside the two polygons it becomes](docs/examples/licence-corners.png)
+
 ## Extracting coordinates
 
 ```bash
@@ -181,6 +216,7 @@ Every `Record` keeps its provenance, and it survives into the GeoJSON under `_do
 uv sync --extra ocr
 uv run pytest
 uv run ruff check src tests
+uv run python docs/make_examples.py    # redraw the README figures
 ```
 
 Tests marked `samples` run against real public reports, committed under
