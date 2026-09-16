@@ -14,7 +14,8 @@
 [Geometry](#points-lines-and-polygons) •
 [Sample outputs](#the-samples-and-the-files-they-produce) •
 [Library](#as-a-library) •
-[Releasing](#releasing)
+[Releasing](#releasing) •
+[Changelog](https://github.com/zoe-amini/doc2geo/blob/main/CHANGELOG.md)
 
 [![ci](https://github.com/zoe-amini/doc2geo/actions/workflows/ci.yml/badge.svg)](https://github.com/zoe-amini/doc2geo/actions/workflows/ci.yml)
 [![pypi](https://img.shields.io/pypi/v/doc2geo?color=C64A30&label=pypi)](https://pypi.org/project/doc2geo/)
@@ -343,11 +344,11 @@ One-time setup on PyPI, under *Your projects → Publishing → Add a pending pu
 Then, to cut a release:
 
 ```bash
-# 1. bump the version in pyproject.toml and src/doc2geo/__init__.py
+# 1. bump the version in pyproject.toml and src/doc2geo/__init__.py, and add a CHANGELOG entry
 # 2. dry run to TestPyPI first
 gh workflow run release.yml -f target=testpypi
 # 3. tag, which publishes to PyPI
-git tag v0.2.0 && git push origin v0.2.0
+git tag v0.3.0 && git push origin v0.3.0
 ```
 
 The workflow refuses to publish if the tag and the packaged version disagree, and runs the

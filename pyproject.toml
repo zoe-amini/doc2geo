@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "doc2geo"
-version = "0.2.0"
+version = "0.3.0"
 description = "Turn PDFs, scans, Word documents and spreadsheets into GeoJSON, Shapefiles and GeoPackages."
 readme = "README.md"
 license = "MIT"

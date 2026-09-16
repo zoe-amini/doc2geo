@@ -7,7 +7,7 @@ Everything carries its provenance: source CRS, transformation, confidence and pa
 
 from __future__ import annotations
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 from .crs import GeoPoint, crs_from_hint, guess_precision_m, parse_dms, to_wgs84
 from .detect import extract_records
