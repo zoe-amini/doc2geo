@@ -14,10 +14,17 @@ authors = [{ name = "Zoe Cayetano" }]
 keywords = ["geospatial", "geojson", "shapefile", "ocr", "pdf", "gis", "etl"]
 classifiers = [
     "Development Status :: 3 - Alpha",
+    "Environment :: Console",
     "Intended Audience :: Science/Research",
-    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering :: GIS",
+    "Topic :: Text Processing :: Markup",
+    "Topic :: Utilities",
 ]
 dependencies = [
     "pyproj>=3.6",
@@ -35,7 +42,9 @@ all = ["doc2geo[ocr,gdal]"]
 
 [project.urls]
 Homepage = "https://github.com/zoe-amini/doc2geo"
+Repository = "https://github.com/zoe-amini/doc2geo"
 Issues = "https://github.com/zoe-amini/doc2geo/issues"
+Changelog = "https://github.com/zoe-amini/doc2geo/releases"
 
 [project.scripts]
 doc2geo = "doc2geo.cli:main"

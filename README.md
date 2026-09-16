@@ -15,12 +15,30 @@ quietly.
 pip install doc2geo            # GeoJSON and CSV out of PDFs, Word files and spreadsheets
 pip install 'doc2geo[gdal]'    # adds Shapefile, GeoPackage, FlatGeobuf
 pip install 'doc2geo[ocr]'     # adds OCR for scanned pages (needs the Tesseract binary)
+pip install 'doc2geo[all]'     # everything
+```
+
+Or without installing anything permanently:
+
+```bash
+uvx doc2geo maps report.pdf --list-only
+pipx install doc2geo
+```
+
+Python 3.11 or newer. The core install pulls in pyproj, pypdf, openpyxl and python-docx and
+nothing heavier — GeoJSON and CSV work out of the box. Two optional system tools are used when
+present and worked around when absent: **poppler** (`pdftoppm`) for rendering and page
+extraction, and **Tesseract** for OCR.
+
+```bash
+brew install poppler tesseract                  # macOS
+sudo apt-get install poppler-utils tesseract-ocr # Debian/Ubuntu
 ```
 
 ## What it looks like
 
-Every figure below is generated from the documents in [`samples/`](samples/README.md) by
-[`docs/make_examples.py`](docs/make_examples.py), so they show what the library currently does
+Every figure below is generated from the documents in [`samples/`](https://github.com/zoe-amini/doc2geo/blob/main/samples/README.md) by
+[`docs/make_examples.py`](https://github.com/zoe-amini/doc2geo/blob/main/docs/make_examples.py), so they show what the library currently does
 rather than what it did when someone last drew a diagram.
 
 ### A scanned page becomes polygons
@@ -29,28 +47,28 @@ A page of a JICA bibliography with no text layer at all. OCR reads it at 0.75 co
 packed DMS coordinates are parsed per record, and each record's two latitudes and two longitudes
 become an extent.
 
-![A scanned catalogue page beside the two extents extracted from it](docs/examples/scan-to-polygons.png)
+![A scanned catalogue page beside the two extents extracted from it](https://raw.githubusercontent.com/zoe-amini/doc2geo/main/docs/examples/scan-to-polygons.png)
 
 The four states of that page, one after another:
 
-![Scan, OCR, parse, polygon](docs/examples/scan-pipeline.gif)
+![Scan, OCR, parse, polygon](https://raw.githubusercontent.com/zoe-amini/doc2geo/main/docs/examples/scan-pipeline.gif)
 
 ### Finding the map in a report
 
 Page 3 of a 161-page forestry report is a Botswana forest distribution map. Page 4 is prose.
 The detector scores the first 1.00 and the second 0.00, and prints why.
 
-![A rejected page of body text beside the detected map page](docs/examples/map-page-detection.png)
+![A rejected page of body text beside the detected map page](https://raw.githubusercontent.com/zoe-amini/doc2geo/main/docs/examples/map-page-detection.png)
 
 Walking the first ten pages of the same report, with the verdict on each:
 
-![The detector's verdict on each page of a report](docs/examples/map-detection.gif)
+![The detector's verdict on each page of a report](https://raw.githubusercontent.com/zoe-amini/doc2geo/main/docs/examples/map-detection.gif)
 
 ### Corner coordinates become licence blocks
 
 Eight rows, two licences, grouped by the `licence` column and ordered by `corner`:
 
-![A table of corner coordinates beside the two polygons it becomes](docs/examples/licence-corners.png)
+![A table of corner coordinates beside the two polygons it becomes](https://raw.githubusercontent.com/zoe-amini/doc2geo/main/docs/examples/licence-corners.png)
 
 ## Extracting coordinates
 
@@ -220,7 +238,7 @@ uv run python docs/make_examples.py    # redraw the README figures
 ```
 
 Tests marked `samples` run against real public reports, committed under
-[`samples/`](samples/README.md) so they run without a network fetch:
+[`samples/`](https://github.com/zoe-amini/doc2geo/blob/main/samples/README.md) so they run without a network fetch:
 
 ```bash
 uv run pytest -m samples
@@ -228,11 +246,40 @@ uv run pytest -m samples
 ```
 
 Those documents are third-party publications included for testing; see
-[samples/README.md](samples/README.md) for what each one is and why it earns its place.
+[samples/README.md](https://github.com/zoe-amini/doc2geo/blob/main/samples/README.md) for what each one is and why it earns its place.
 
 Optional system tools: **poppler** (`pdftoppm`) for rendering and page extraction, **Tesseract**
 for OCR. Both are found automatically when present and degraded around when absent.
 
+## Releasing
+
+Publishing runs on [PyPI Trusted Publishing](https://docs.pypi.org/trusted-publishers/), so no
+API token is stored in the repository or in GitHub secrets. PyPI is told to trust a specific
+workflow in this repository, and GitHub signs a short-lived token at publish time.
+
+One-time setup on PyPI, under *Your projects → Publishing → Add a pending publisher*:
+
+| Field | Value |
+| --- | --- |
+| PyPI project name | `doc2geo` |
+| Owner | `zoe-amini` |
+| Repository | `doc2geo` |
+| Workflow name | `release.yml` |
+| Environment | `pypi` (`testpypi` for the TestPyPI publisher) |
+
+Then, to cut a release:
+
+```bash
+# 1. bump the version in pyproject.toml and src/doc2geo/__init__.py
+# 2. dry run to TestPyPI first
+gh workflow run release.yml -f target=testpypi
+# 3. tag, which publishes to PyPI
+git tag v0.2.0 && git push origin v0.2.0
+```
+
+The workflow refuses to publish if the tag and the packaged version disagree, and runs the
+full test suite and `twine check` before it uploads anything.
+
 ## Licence
 
-MIT. See [LICENSE](LICENSE).
+MIT. See [LICENSE](https://github.com/zoe-amini/doc2geo/blob/main/LICENSE).
