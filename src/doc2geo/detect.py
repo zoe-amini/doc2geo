@@ -14,6 +14,15 @@ import re
 from dataclasses import dataclass
 
 from .crs import crs_from_hint, guess_precision_m, parse_dms, to_wgs84
+from .geometry import (
+    GROUP_NAMES,
+    ORDER_NAMES,
+    _shape_kind,
+    bbox_from_text,
+    group_vertices,
+    records_from_groups,
+    records_from_wkt_table,
+)
 from .records import Extraction, Record, Table, TextBlock
 
 LON_NAMES = ("longitude", "long", "lon", "lng", "easting", "east", "x_coord", "utm_e", "x")
@@ -163,9 +172,9 @@ def records_from_table(
             point = to_wgs84(x, y, crs)
         properties = {k: v for k, v in row.items() if k not in {pick.lon, pick.lat} and str(v).strip()}
         records.append(
-            Record(
-                lon=point.lon,
-                lat=point.lat,
+            Record.point(
+                point.lon,
+                point.lat,
                 properties=properties,
                 source_crs=point.source_crs,
                 transform=point.transform,
@@ -199,9 +208,9 @@ def records_from_text(
         if not (-90 <= lat <= 90 and -180 <= lon <= 180):
             continue
         records.append(
-            Record(
-                lon=round(lon, 7),
-                lat=round(lat, 7),
+            Record.point(
+                round(lon, 7),
+                round(lat, 7),
                 properties={"text": match.group(0).strip()},
                 accuracy_m=guess_precision_m(lon, lat),
                 confidence=round(0.75 * block.confidence, 3),
@@ -222,9 +231,9 @@ def records_from_text(
             continue
         point = to_wgs84(float(easting), float(northing), crs, accuracy_m=1.0)
         records.append(
-            Record(
-                lon=point.lon,
-                lat=point.lat,
+            Record.point(
+                point.lon,
+                point.lat,
                 properties={"text": match.group(0).strip()},
                 source_crs=point.source_crs,
                 transform=point.transform,
@@ -237,13 +246,97 @@ def records_from_text(
     return records
 
 
-def extract_records(extraction: Extraction, *, crs_hint: str | int | None = None) -> list[Record]:
-    """Everything locatable in one file. Tables first, then prose."""
+def shape_columns(table: Table) -> tuple[str | None, str | None, str | None]:
+    """The grouping, ordering and type columns that turn rows of vertices into one shape."""
+    names = list(table.as_dicts()[0].keys()) if table.rows else list(table.header)
+    if not names:
+        return None, None, None
+    group = _match_column(names, GROUP_NAMES)
+    order = _match_column(names, ORDER_NAMES)
+    kind = _match_column(names, ("type", "geometry", "geom_type", "shape_type"))
+    return group, order, kind
+
+
+def records_from_table_shapes(
+    table: Table,
+    *,
+    crs_hint: str | int | None = None,
+) -> list[Record] | None:
+    """Lines and polygons assembled from a table of vertices, or None if it is not one.
+
+    A table qualifies when it has coordinate columns, a grouping column, and at least one group
+    with two or more vertices. A grouping column whose values are all distinct is an identifier
+    for individual points, not a shape key, so it is left alone.
+    """
+    pick = pick_columns(table)
+    group_column, order_column, type_column = shape_columns(table)
+    if not pick or not group_column or group_column in (pick.lon, pick.lat):
+        return None
+
+    groups = group_vertices(
+        table,
+        pick.lon,
+        pick.lat,
+        group_column=group_column,
+        order_column=order_column,
+        type_column=type_column,
+    )
+    if not groups or all(len(g.coordinates) < 2 for g in groups):
+        return None
+
+    explicit = None
+    if type_column:
+        rows = table.as_dicts()
+        explicit = next(
+            (str(r.get(type_column, "")) for r in rows if str(r.get(type_column, "")).strip()), None
+        )
+    kind = _shape_kind(group_column, explicit)
+    return records_from_groups(
+        groups,
+        kind=kind,
+        crs_hint=crs_hint,
+        page=table.page,
+        table_name=table.name,
+    )
+
+
+def extract_records(
+    extraction: Extraction,
+    *,
+    crs_hint: str | int | None = None,
+    geometry: str = "auto",
+    ocr_repair: bool = False,
+) -> list[Record]:
+    """Everything locatable in one file. Tables first, then prose.
+
+    `geometry="auto"` assembles lines and polygons where the document supports it: WKT cells,
+    tables of vertices grouped by a licence or line column, and bounding boxes in catalogue
+    text. `geometry="points"` keeps every row a point.
+    """
+    if geometry not in ("auto", "points"):
+        raise ValueError("geometry must be 'auto' or 'points'")
+
     hint = crs_hint or crs_hint_from_text(extraction.text())
     records: list[Record] = []
+
     for table in extraction.tables:
+        if geometry == "auto":
+            wkt_records = records_from_wkt_table(table, crs_hint=hint)
+            if wkt_records:
+                records.extend(wkt_records)
+                continue
+            shapes = records_from_table_shapes(table, crs_hint=hint)
+            if shapes:
+                records.extend(shapes)
+                continue
         found, _ = records_from_table(table, crs_hint=hint)
         records.extend(found)
+
     for block in extraction.blocks:
+        if geometry == "auto":
+            boxes = bbox_from_text(block, repair=ocr_repair)
+            if boxes:
+                records.extend(boxes)
+                continue
         records.extend(records_from_text(block, crs_hint=hint))
     return records

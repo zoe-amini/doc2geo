@@ -7,6 +7,7 @@ ever see `Record`s. Adding a new input format means adding a reader and nothing 
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -71,10 +72,13 @@ class Extraction:
 
 @dataclass
 class Record:
-    """One located thing, in WGS84, with its provenance intact."""
+    """One located thing, in WGS84, with its provenance intact.
 
-    lon: float
-    lat: float
+    `geometry` is a GeoJSON geometry dict, so a record is a point, a line or a polygon without
+    the rest of the pipeline caring which. Use `Record.point()` for the common case.
+    """
+
+    geometry: dict[str, Any]
     properties: dict[str, Any] = field(default_factory=dict)
     source_crs: str = "WGS 84"
     transform: str = "none"
@@ -82,6 +86,64 @@ class Record:
     confidence: float = 1.0
     page: int = 1
     origin: str = ""  # "table:Appendix B row 12" or "text:page 4"
+
+    @classmethod
+    def point(cls, lon: float, lat: float, **kwargs: Any) -> Record:
+        return cls(geometry={"type": "Point", "coordinates": [lon, lat]}, **kwargs)
+
+    @classmethod
+    def line(cls, coordinates: Sequence[Sequence[float]], **kwargs: Any) -> Record:
+        return cls(geometry={"type": "LineString", "coordinates": [list(c) for c in coordinates]}, **kwargs)
+
+    @classmethod
+    def polygon(cls, ring: Sequence[Sequence[float]], **kwargs: Any) -> Record:
+        """A single-ring polygon. The ring is closed here if the source did not close it."""
+        closed = [list(c) for c in ring]
+        if closed and closed[0] != closed[-1]:
+            closed.append(list(closed[0]))
+        return cls(geometry={"type": "Polygon", "coordinates": [closed]}, **kwargs)
+
+    @property
+    def geom_type(self) -> str:
+        return str(self.geometry.get("type", "")) if self.geometry else ""
+
+    @property
+    def lon(self) -> float | None:
+        """Longitude for a point; None for anything else."""
+        return self.geometry["coordinates"][0] if self.geom_type == "Point" else None
+
+    @property
+    def lat(self) -> float | None:
+        return self.geometry["coordinates"][1] if self.geom_type == "Point" else None
+
+    def vertices(self) -> list[tuple[float, float]]:
+        """Every coordinate in the geometry, flattened, for range and bounds checking."""
+        out: list[tuple[float, float]] = []
+
+        def walk(node: Any) -> None:
+            if (
+                isinstance(node, (list, tuple))
+                and len(node) >= 2
+                and all(isinstance(v, (int, float)) for v in node[:2])
+            ):
+                out.append((float(node[0]), float(node[1])))
+                return
+            if isinstance(node, (list, tuple)):
+                for child in node:
+                    walk(child)
+
+        walk(self.geometry.get("coordinates", []))
+        return out
+
+    def centroid(self) -> tuple[float, float] | None:
+        """Mean of the vertices. Good enough to ask "is this in the right country?"."""
+        points = self.vertices()
+        if not points:
+            return None
+        return (
+            round(sum(p[0] for p in points) / len(points), 7),
+            round(sum(p[1] for p in points) / len(points), 7),
+        )
 
     def to_feature(self) -> dict[str, Any]:
         """GeoJSON Feature. Provenance rides along under `_doc2geo` so it survives a round trip."""
@@ -94,8 +156,4 @@ class Record:
             "page": self.page,
             "origin": self.origin,
         }
-        return {
-            "type": "Feature",
-            "geometry": {"type": "Point", "coordinates": [self.lon, self.lat]},
-            "properties": properties,
-        }
+        return {"type": "Feature", "geometry": self.geometry, "properties": properties}

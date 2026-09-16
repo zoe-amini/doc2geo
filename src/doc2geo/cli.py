@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from collections import Counter
 from pathlib import Path
 
 from . import __version__
@@ -32,7 +33,9 @@ def cmd_convert(args: argparse.Namespace) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 
-    records = extract_records(extraction, crs_hint=args.crs)
+    records = extract_records(
+        extraction, crs_hint=args.crs, geometry=args.geometry, ocr_repair=args.ocr_repair
+    )
     if args.min_confidence:
         records = [r for r in records if r.confidence >= args.min_confidence]
 
@@ -50,17 +53,20 @@ def cmd_convert(args: argparse.Namespace) -> int:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 
+    kinds = Counter(r.geom_type for r in records)
     summary = {
         "input": str(args.input),
         "output": str(output),
         "records": len(records),
+        "geometries": dict(kinds),
         "backend": extraction.backend,
         "checks": report.summary(),
     }
     if args.json:
         print(json.dumps(summary, indent=1))
     else:
-        print(f"{len(records)} record(s) -> {output}  [{extraction.backend}]")
+        mix = ", ".join(f"{count} {kind.lower()}" for kind, count in kinds.most_common()) or "nothing"
+        print(f"{len(records)} record(s) -> {output}  [{mix}; {extraction.backend}]")
         for finding in report.findings[: args.max_findings]:
             print(f"  {finding.level:>5}  {finding.check}: {finding.message}")
         remaining = len(report.findings) - args.max_findings
@@ -177,6 +183,17 @@ def build_parser() -> argparse.ArgumentParser:
         "--crs", help="CRS of the source coordinates, e.g. 'Arc 1950 / UTM 34S' or EPSG:20934"
     )
     convert.add_argument("--bbox", help="expected area as min_lon,min_lat,max_lon,max_lat")
+    convert.add_argument(
+        "--geometry",
+        default="auto",
+        choices=("auto", "points"),
+        help="auto builds lines and polygons where the document supports it; points keeps rows as points",
+    )
+    convert.add_argument(
+        "--ocr-repair",
+        action="store_true",
+        help="accept a glyph where a badly scanned hemisphere letter should be; flagged in the output",
+    )
     convert.add_argument(
         "--min-confidence", type=float, default=0.0, help="drop records below this confidence"
     )

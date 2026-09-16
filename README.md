@@ -32,6 +32,29 @@ Coordinates are found two ways. Tables get their columns identified by name (`lo
 Prose gets scanned for the spellings people actually write: `21°34'12"S, 25°12'03"E`,
 `-21.5701 25.2009`, `zone 34S 512345 mE 7612345 mN`.
 
+## Points, lines and polygons
+
+Documents rarely hand over a polygon. They hand over the corners of a licence block, one per
+row, and expect you to know the rows belong together. `--geometry auto`, the default, assembles
+them:
+
+| In the document | Out |
+| --- | --- |
+| A `geom`/`wkt` cell holding `POLYGON((…))` | that geometry, reprojected if `--crs` says so |
+| Rows grouped by `licence`, `block`, `claim`, `tenement` … | one **Polygon** per group |
+| Rows grouped by `line`, `traverse`, `section` … | one **LineString** per group |
+| Rows whose first and last vertex are identical | a **Polygon**, whatever the column is called |
+| `Latitude: S060000 ; S030000  Longitude: E0340000 ; E0390000` | a **Polygon** for the extent |
+| Anything else | **Points**, as before |
+
+A `corner`, `seq` or `order` column sets the vertex order, so rows out of order in the
+spreadsheet still close correctly. Rings are closed automatically if the source left them open.
+
+The one thing it will not do is close a line. A group named `traverse` stays a `LineString`
+even with a dozen vertices, because turning a survey path into a polygon invents area that was
+never surveyed. Use `--geometry points` to switch the whole thing off and keep every row a
+point.
+
 `--bbox` is worth using. It is what catches the single most common failure in hand-built
 coordinate tables — longitude and latitude in the wrong columns — because a swapped point
 usually lands somewhere impossible:
@@ -98,12 +121,18 @@ The honest limits:
 
 - **A scanned page with no OCR backend yields nothing.** The library says so in `note` rather
   than returning an empty result as if the document were empty.
+- **Bad scans lose hemisphere letters**, and a lost sign is the one error that moves a point to
+  another continent while looking perfectly reasonable. By default those values are dropped.
+  `--ocr-repair` will accept a glyph left in the letter's place (`$060000`, `5030000`) or take
+  the hemisphere from a legible sibling in the same field — but only then, only with the axis
+  label to constrain it, and always flagged as `ocr_repair_enabled` with the confidence cut. It
+  supplies a missing hemisphere; it will never invent digits, so a record mangled worse than
+  that is still dropped.
 - **Monochrome scanned map sheets are the hardest case.** With no text layer and no colour, the
   detector is working from ink coverage and page geometry alone. Give it OCR and the graticule
   signal comes back.
 - **`.xls` and `.doc`** are the pre-2007 binary formats and are not supported; re-save as
   `.xlsx`/`.docx`.
-- **Polygons and lines are not extracted yet.** Everything comes out as points.
 
 ### Hosted OCR
 

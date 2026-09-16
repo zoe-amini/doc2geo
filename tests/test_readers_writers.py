@@ -76,7 +76,7 @@ def test_csv_output_has_a_stable_header(tmp_path, points_csv):
     records = extract_records(read(points_csv))
     out = write_csv(records, tmp_path / "out.csv")
     header = out.read_text().splitlines()[0]
-    assert header.startswith("lon,lat,")
+    assert header.startswith("geometry,lon,lat,")
     assert "confidence" in header
 
 
@@ -86,7 +86,7 @@ def test_write_rejects_unknown_extension(tmp_path):
 
 
 def test_checks_flag_swapped_columns():
-    swapped = [Record(lon=-21.87, lat=27.12), Record(lon=-21.97, lat=27.80), Record(lon=-21.10, lat=27.54)]
+    swapped = [Record.point(-21.87, 27.12), Record.point(-21.97, 27.80), Record.point(-21.10, 27.54)]
     report = check_records(swapped, bbox=BOTSWANA)
     assert any(f.check == "lon-lat-swapped" for f in report.findings)
     assert any(f.check == "systematic-swap" for f in report.findings)
@@ -99,5 +99,5 @@ def test_checks_pass_clean_records(points_csv):
 
 
 def test_checks_flag_null_island():
-    report = check_records([Record(lon=0.0, lat=0.0)])
+    report = check_records([Record.point(0.0, 0.0)])
     assert any(f.check == "null-island" for f in report.findings)

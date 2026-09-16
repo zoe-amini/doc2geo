@@ -105,3 +105,16 @@ def test_ignores_a_scanned_report_that_has_no_maps(sample_pdf):
     from doc2geo.mappages import find_map_pages
 
     assert find_map_pages(sample_pdf("fao_BWA_4.pdf")) == []
+
+
+@pytest.mark.samples
+def test_ocr_reads_a_scanned_catalogue_page(sample_pdf):
+    """The scanned bibliography has no text layer; everything depends on OCR working."""
+    from doc2geo.ocr import available_backends
+    from doc2geo.readers import read
+
+    if "tesseract" not in available_backends():
+        pytest.skip("no local OCR backend")
+    extraction = read(sample_pdf("jica_10891885_04.pdf"), max_pages=1)
+    assert extraction.backend in ("tesseract", "http")
+    assert "\n" in extraction.text(), "OCR must preserve line structure, not run the page together"

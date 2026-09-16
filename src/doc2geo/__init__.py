@@ -7,10 +7,11 @@ Everything carries its provenance: source CRS, transformation, confidence and pa
 
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 from .crs import GeoPoint, crs_from_hint, guess_precision_m, parse_dms, to_wgs84
 from .detect import extract_records
+from .geometry import parse_packed_dms, parse_wkt
 from .readers import UnsupportedInput, read
 from .records import Extraction, Record, Table, TextBlock
 
@@ -26,6 +27,8 @@ __all__ = [
     "extract_records",
     "guess_precision_m",
     "parse_dms",
+    "parse_packed_dms",
+    "parse_wkt",
     "read",
     "to_wgs84",
 ]

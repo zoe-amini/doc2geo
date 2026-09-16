@@ -42,8 +42,34 @@ def write_geojson(records: list[Record], path: Path) -> Path:
     return path
 
 
+def to_wkt(geometry: dict) -> str:
+    """GeoJSON geometry to WKT, so a CSV can carry a polygon rather than lose it."""
+    kind = str(geometry.get("type", "")).upper()
+    coordinates = geometry.get("coordinates", [])
+
+    def pair(point) -> str:
+        return f"{point[0]} {point[1]}"
+
+    def ring(points) -> str:
+        return "(" + ", ".join(pair(p) for p in points) + ")"
+
+    if kind == "POINT":
+        return f"POINT ({pair(coordinates)})" if coordinates else "POINT EMPTY"
+    if kind in ("LINESTRING", "MULTIPOINT"):
+        return f"{kind} {ring(coordinates)}"
+    if kind in ("POLYGON", "MULTILINESTRING"):
+        return f"{kind} (" + ", ".join(ring(part) for part in coordinates) + ")"
+    if kind == "MULTIPOLYGON":
+        return (
+            "MULTIPOLYGON ("
+            + ", ".join("(" + ", ".join(ring(r) for r in polygon) + ")" for polygon in coordinates)
+            + ")"
+        )
+    return "GEOMETRYCOLLECTION EMPTY"
+
+
 def write_csv(records: list[Record], path: Path) -> Path:
-    """Flat table with lon/lat first, then the union of all property keys."""
+    """Flat table with the geometry as WKT, then lon/lat, then the union of property keys."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     keys: list[str] = []
@@ -51,14 +77,16 @@ def write_csv(records: list[Record], path: Path) -> Path:
         for key in record.properties:
             if key not in keys:
                 keys.append(key)
-    columns = ["lon", "lat", *keys, "source_crs", "accuracy_m", "confidence", "page", "origin"]
+    columns = ["geometry", "lon", "lat", *keys, "source_crs", "accuracy_m", "confidence", "page", "origin"]
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=columns, extrasaction="ignore")
         writer.writeheader()
         for record in records:
+            centre = record.centroid()
             row = {
-                "lon": record.lon,
-                "lat": record.lat,
+                "geometry": to_wkt(record.geometry),
+                "lon": record.lon if record.lon is not None else (centre[0] if centre else ""),
+                "lat": record.lat if record.lat is not None else (centre[1] if centre else ""),
                 "source_crs": record.source_crs,
                 "accuracy_m": record.accuracy_m,
                 "confidence": round(record.confidence, 3),
@@ -79,7 +107,7 @@ def write_ogr(records: list[Record], path: Path, driver: str) -> Path:
 
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    geometry = [f"POINT ({r.lon} {r.lat})" for r in records]
+    geometry = [to_wkt(r.geometry) for r in records]
     keys: list[str] = []
     for record in records:
         for key in record.properties:

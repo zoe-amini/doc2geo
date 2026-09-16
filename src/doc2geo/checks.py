@@ -51,7 +51,7 @@ def check_records(
     precision_warn_m: float = 1000.0,
     low_confidence: float = 0.7,
 ) -> CheckReport:
-    """Range, duplication, precision and (optionally) an expected bounding box.
+    """Range, ring closure, duplication, precision and (optionally) an expected bounding box.
 
     `bbox` is (min_lon, min_lat, max_lon, max_lat). When given, points outside it are errors,
     and a point that would fall inside it with lon and lat exchanged is flagged as a likely
@@ -62,12 +62,45 @@ def check_records(
     swapped = 0
 
     for index, record in enumerate(records):
-        lon, lat = record.lon, record.lat
-        if not (-180 <= lon <= 180 and -90 <= lat <= 90):
+        vertices = record.vertices()
+        if not vertices:
+            report.findings.append(Finding("error", "empty-geometry", "record has no coordinates", index))
+            continue
+
+        out_of_range = [(x, y) for x, y in vertices if not (-180 <= x <= 180 and -90 <= y <= 90)]
+        if out_of_range:
+            first = out_of_range[0]
             report.findings.append(
-                Finding("error", "out-of-range", f"{lon}, {lat} is not a geographic coordinate", index)
+                Finding(
+                    "error",
+                    "out-of-range",
+                    f"{first[0]}, {first[1]} is not a geographic coordinate"
+                    + (f" ({len(out_of_range)} of {len(vertices)} vertices)" if len(vertices) > 1 else ""),
+                    index,
+                )
             )
             continue
+
+        if record.geom_type == "Polygon":
+            for ring in record.geometry.get("coordinates", []):
+                if len(ring) < 4:
+                    report.findings.append(
+                        Finding(
+                            "error",
+                            "degenerate-ring",
+                            f"ring has {len(ring)} points; a polygon needs 4",
+                            index,
+                        )
+                    )
+                elif ring[0] != ring[-1]:
+                    report.findings.append(Finding("error", "unclosed-ring", "ring does not close", index))
+        if record.geom_type == "LineString" and len(vertices) < 2:
+            report.findings.append(Finding("error", "degenerate-line", "a line needs two points", index))
+
+        centre = record.centroid()
+        if centre is None:
+            continue
+        lon, lat = centre
         if lon == 0 and lat == 0:
             report.findings.append(
                 Finding("warn", "null-island", "0, 0 is almost always a parse failure", index)
@@ -105,7 +138,8 @@ def check_records(
                     "info", "low-confidence", f"confidence {record.confidence:.2f}; review before use", index
                 )
             )
-        seen[(round(lon, 6), round(lat, 6))] += 1
+        if record.geom_type == "Point":
+            seen[(round(lon, 6), round(lat, 6))] += 1
 
     for (lon, lat), count in seen.items():
         if count > 1:

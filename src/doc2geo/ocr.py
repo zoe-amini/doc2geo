@@ -76,17 +76,20 @@ def _tesseract(path: Path, max_pages: int) -> list[TextBlock]:
     try:
         for number, image_path in pages:
             data = pytesseract.image_to_data(Image.open(image_path), output_type=pytesseract.Output.DICT)
-            words, confidences = [], []
-            for word, conf in zip(data["text"], data["conf"], strict=True):
+            lines: dict[tuple[int, int, int], list[str]] = {}
+            confidences: list[float] = []
+            for index, word in enumerate(data["text"]):
                 if not word.strip():
                     continue
-                words.append(word)
-                value = float(conf)
+                key = (data["block_num"][index], data["par_num"][index], data["line_num"][index])
+                lines.setdefault(key, []).append(word)
+                value = float(data["conf"][index])
                 confidences.append(value / 100 if value >= 0 else 0.0)
-            if words:
+            if lines:
+                text = "\n".join(" ".join(words) for _, words in sorted(lines.items()))
                 blocks.append(
                     TextBlock(
-                        text=" ".join(words),
+                        text=text,
                         page=number,
                         confidence=round(sum(confidences) / len(confidences), 3),
                         backend="tesseract",
