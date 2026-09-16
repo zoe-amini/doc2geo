@@ -1,0 +1,23 @@
+# Sample documents
+
+Real public reports, committed here so the `samples` tests run without a network fetch and so
+the detector's behaviour can be checked against documents that were not written for it.
+
+| File | What it is | Why it is here |
+| --- | --- | --- |
+| `usgs_cp46.pdf` | USGS Circum-Pacific Map Project, report 46. Public domain (US Government work). | Monochrome **projected** map sheets on pages 12 and 35, with graticule labels in the text layer. The case that proves the georeferencer must refuse: an affine fitted to page 35 is off by 10.3°. |
+| `jica_12301594_01.pdf` | JICA open report, born-digital. | An A3 colour map on page 3 among 161 pages of prose — the polychrome signal at its clearest. |
+| `jica_10891885_04.pdf` | JICA open report: a scanned GEOREF bibliography. | **No maps at all**, but packed DMS coordinates in the text (`Latitude: S060000; Longitude: E0340000`). A true negative for `maps` and a workload for `convert`. |
+| `fao_BWA_4.pdf` | FAO/UNDP Soil Survey of Botswana, text volume. | Entirely scanned, entirely mapless: prose and soil profile description forms. The other true negative, and the reason the threshold sits at 0.5 — the forms score 0.42. |
+| `tender_naming_pattern.pdf` | The FAO soil map sheet of Botswana, one very large page. | A colour map sheet with no text layer: chroma 0.51 across 75 colours. |
+
+`fetch.sh` re-downloads the four that have public URLs, for anyone who would rather not clone
+21 MB of PDFs, or who wants to refresh them.
+
+## Provenance and rights
+
+These are third-party publications reproduced here for testing. The MIT licence on this
+repository covers the code and says nothing about the contents of these documents: the USGS
+report is a US Government work in the public domain, while the FAO and JICA documents remain
+the property of their publishers and are included as publicly available material. If you are a
+rights holder and would prefer a file removed, open an issue and it will be taken out.

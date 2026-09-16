@@ -18,5 +18,3 @@ out/
 *.prj
 *.cpg
 
-# Sample documents are fetched, never committed: see samples/fetch.sh
-samples/*.pdf

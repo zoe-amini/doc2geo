@@ -154,14 +154,16 @@ uv run pytest
 uv run ruff check src tests
 ```
 
-Tests marked `samples` run against real public reports. They are not committed — the FAO and
-JICA documents are third-party publications, and a permissive licence on this code says nothing
-about redistributing them — so fetch them first:
+Tests marked `samples` run against real public reports, committed under
+[`samples/`](samples/README.md) so they run without a network fetch:
 
 ```bash
-./samples/fetch.sh
 uv run pytest -m samples
+./samples/fetch.sh        # re-download the four with public URLs
 ```
+
+Those documents are third-party publications included for testing; see
+[samples/README.md](samples/README.md) for what each one is and why it earns its place.
 
 Optional system tools: **poppler** (`pdftoppm`) for rendering and page extraction, **Tesseract**
 for OCR. Both are found automatically when present and degraded around when absent.
